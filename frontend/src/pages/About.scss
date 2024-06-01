@@ -1,0 +1,75 @@
+.about-container {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 20px;
+}
+  
+.profile-container {
+ display: flex;
+ justify-content: center;
+ margin-bottom: 20px;
+}
+  
+.profile-image {
+ width: 80px;
+ height: 80px;
+ border-radius: 50%;
+ border: 5px solid white;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+  
+.about-text {
+ max-width: 600px;
+ text-align: justify;
+ font-size: 18px; /* Padidintas šrifto dydis */
+}
+  
+.about-text p {
+ text-indent: 20px;
+ margin-bottom: 15px;
+}
+  
+.highlight {
+ font-weight: bold;
+}
+  
+.icon-text {
+ display: inline-flex; /* Užtikrina, kad elementai būtų vienoje eilutėje */
+ align-items: center;
+ margin-right: 5px; /* Mažesnis tarpas tarp icon-text elementų */
+}
+  
+.icon {
+ margin-left: 2px; /* Mažesnis tarpas prieš ikoną */
+ margin-right: 2px; /* Mažesnis tarpas po ikonos */
+ font-size: 1.2em; /* Užtikrina, kad ikonos atitiktų šrifto dydį */
+}
+  
+@media only screen and (min-width: 768px) {
+ .about-container {
+ padding: 40px;
+}
+  
+.profile-container {
+ justify-content: flex-start;
+}
+  
+.profile-image {
+ width: 120px;
+ height: 120px;
+}
+  
+.about-text {
+ font-size: 20px; /* Padidintas šrifto dydis didesniuose ekranuose */
+}
+  
+.about-text p {
+ margin-bottom: 20px; /* Didesnis tarpas tarp paragrafų didesniuose ekranuose */
+}
+  
+.back-link {
+ font-size: 18px; /* Padidintas šrifto dydis nuorodai didesniuose ekranuose */
+ }
+}
+  
