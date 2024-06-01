@@ -1,8 +1,8 @@
-import { useState  } from "react";
-import { Link } from "react-router-dom"
-import { FaBars, FaTimes } from "react-icons/fa";
-import logo from "..assets/logo.jpeg";
-import "./Header.scss";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FaBars, FaTimes } from 'react-icons/fa';
+import logo from '../assets/logo.jpeg';
+import './Header.scss';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,9 +18,9 @@ const Header = () => {
   return (
     <header>
       <div className="logo">
-       <img src={logo} alt="Zigmaswebdev logo"/>
+        <img src={logo} alt="Zigmaswebdev Logo" />
       </div>
-      <nav className={isMenuOpen ? "open" : ''}>
+      <nav className={isMenuOpen ? "open" : ""}>
         <ul>
           <li>
             <Link to="/" onClick={closeMenu}></Link>
