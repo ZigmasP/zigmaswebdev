@@ -1,0 +1,22 @@
+body {
+    background-color: #80D0C7;
+    background-image: linear-gradient(135deg, #80D0C7 0%, #0093E9 55%);
+    margin: 0;
+  }
+  
+  .back-link {
+      position: absolute; // Užtikrina pozicionavimą
+      top: 60px; // Pakeiskite pagal norimą atstumą nuo viršaus
+      right: 10px; // Pakeiskite pagal norimą atstumą nuo dešinės
+      text-decoration: none; // Norėdami pašalinti pabraukimą
+      color: red; // Išsaugo spalvą pagal režimą
+      font-size: 10px; // Galite pakeisti šrifto dydį
+      cursor: pointer; // Rodyti, kad galima paspausti
+    }
+    
+    // Pasirinkite tinkamą spalvą, kai nuoroda yra ant pele.
+    .back-link:hover {
+      text-decoration: none;
+      color: red; // Galite pakeisti efektą, kai užvedate pelę
+    }
+    
