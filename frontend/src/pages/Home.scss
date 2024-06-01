@@ -1,0 +1,45 @@
+.home-container {
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ height: 72vh;
+ margin-top: 80px;
+ padding: 20px;
+ box-sizing: border-box;
+}
+  
+.hero {
+ text-align: center;
+ margin-bottom: 20px;
+}
+  
+button {
+ margin-top: 20px;
+ padding: 10px 20px;
+ font-size: 16px;
+ border: none;
+ border-radius: 5px;
+ background-color: #0093E9;
+ color: white;
+ cursor: pointer;
+ transition: background-color 0.3s;
+  
+ &:hover {
+  background-color: #007bbd;
+ }
+}
+  
+@media only screen and (min-width: 768px) {
+ .home-container {
+ flex-direction: row; /* Horizontalus postūmis */
+ justify-content: center; /* Prikabinti prie vidurio */
+ align-items: flex-start;
+ }
+  
+ .hero {
+  max-width: 600px;
+  text-align: center;
+ }
+}
+  
