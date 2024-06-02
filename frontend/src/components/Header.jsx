@@ -29,7 +29,7 @@ const Header = () => {
             <Link to="/apie-mane" onClick={closeMenu}>Apie mane</Link>
           </li>
           <li>
-            <Link to="/darbai" onClick={closeMenu}>Mano darbai</Link>
+            <Link to="/mano-darbai" onClick={closeMenu}>Mano darbai</Link>
           </li>
           <li>
             <Link to="/kontaktai" onClick={closeMenu}>Kontaktai</Link>

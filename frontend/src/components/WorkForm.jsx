@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom"; // Pakeitimas čia
-import { useParams } from "react-router-dom"; // Naujas importas
+import { useHistory, useParams } from "react-router-dom";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./WorkForm.scss";
 
 const WorkForm = () => {
   const [work, setWork] = useState(null);
-  const history = useHistory(); // Keitimas čia
+  const history = useHistory();
+  // Keitimas čia
   const { id } = useParams(); // Naujas importas
 
   useEffect(() => {
