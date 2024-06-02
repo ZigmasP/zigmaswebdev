@@ -14,7 +14,7 @@ return (
       <Route path="/" element={<Home />} />;
       <Route path="/apie-mane" element={<About />} />;
       <Route path="/mano-darbai" element={<Works />} />;
-      <Route path="/add-work" element={<WorkForm />} />
+      <Route path="/add-work" element={<WorkForm />} />;
     </Routes>
   </>
  );

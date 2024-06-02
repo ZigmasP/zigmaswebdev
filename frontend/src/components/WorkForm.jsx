@@ -2,7 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import styles from "./WorkForm.scss";
+import "./WorkForm.scss";
 
 const workSchema = Yup.object().shape({
   firstName: Yup.string().required('Vardas privalomas'),
@@ -41,12 +41,12 @@ const WorkForm = () => {
   };
 
   return (
-    <div className={styles.workFormContainer}>
+    <div className="workFormContainer">
       <h2>Pridėti darbą</h2>
-      <button onClick={handleLogout} className={styles.logoutButton}>
+      <button onClick={handleLogout} className="ogoutButton">
         X
       </button>
-      <button onClick={() => navigate('/works')} className={styles.workListButton}>
+      <button onClick={() => navigate('/works')} className="workListButton">
         Į darbų sąrašą
       </button>
       <Formik
@@ -60,32 +60,32 @@ const WorkForm = () => {
         onSubmit={handleSubmit}
       >
         {({ isSubmitting, setFieldValue }) => (
-          <Form className={styles.form}>
-            <div className={styles.formGroup}>
+          <Form className="form">
+            <div className="formGroup">
               <label>Vardas</label>
-              <Field name="firstName" type="text" className={styles.inputField} />
-              <ErrorMessage name="firstName" component="div" className={styles.error} />
+              <Field name="firstName" type="text" className="inputField" />
+              <ErrorMessage name="firstName" component="div" className="error" />
             </div>
-            <div className={styles.formGroup}>
+            <div className="formGroup">
               <label>Pavardė</label>
-              <Field name="lastName" type="text" className={styles.inputField} />
-              <ErrorMessage name="lastName" component="div" className={styles.error} />
+              <Field name="lastName" type="text" className="inputField" />
+              <ErrorMessage name="lastName" component="div" className="error" />
             </div>
-            <div className={styles.formGroup}>
+            <div className="formGroup">
               <label>Gimimo data</label>
-              <Field name="birthDate" type="date" className={styles.inputField} />
-              <ErrorMessage name="birthDate" component="div" className={styles.error} />
+              <Field name="birthDate" type="date" className="inputField" />
+              <ErrorMessage name="birthDate" component="div" className="error" />
             </div>
-            <div className={styles.formGroup}>
+            <div className="formGroup">
               <label>Nuotrauka</label>
               <input
                 type="file"
                 onChange={(event) => setFieldValue('photo', event.currentTarget.files[0])}
-                className={styles.inputField}
+                className="inputField"
               />
-              <ErrorMessage name="photo" component="div" className={styles.error} />
+              <ErrorMessage name="photo" component="div" className="error" />
             </div>
-            <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
+            <button type="submit" disabled={isSubmitting} className="submitButton">
               {isSubmitting ? 'Pateikiama...' : 'Pridėti'}
             </button>
           </Form>

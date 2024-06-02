@@ -60,10 +60,10 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-app.get("/gallery", (req, res) => {
+app.get("/works", (req, res) => {
   fs.readdir("uploads/", (err, files) => {
     if (err) {
-      return res.status(500).json({ error: "Failed to load gallery" });
+      return res.status(500).json({ error: "Failed to load works" });
     }
     res.status(200).json(files);
   });
@@ -538,12 +538,12 @@ app.delete("/works/:id", authenticateToken, (req, res) => {
   const sql = "DELETE FROM works WHERE id = ?";
   db.query(sql, [req.params.id], (err, result) => {
     if (err) {
-      return res.status(500).json({ error: "Failed to delete work" });
+      return res.status(500).json({ error: "Nepavyko ištrinti" });
     }
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Work not found" });
+      return res.status(404).json({ message: "Failas nerastas" });
     }
-    res.status(200).json({ message: "Work deleted successfully" });
+    res.status(200).json({ message: "Ištrinta sėkmingai" });
   });
 });
 
