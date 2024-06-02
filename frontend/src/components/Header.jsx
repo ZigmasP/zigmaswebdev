@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaBars, FaTimes } from 'react-icons/fa';
-import logo from '../assets/logo.jpeg';
-import './Header.scss';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
+import logo from "../assets/logo.jpeg";
+import "./Header.scss";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

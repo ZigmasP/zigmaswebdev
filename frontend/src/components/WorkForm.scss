@@ -1,0 +1,101 @@
+.workFormContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+  
+    .workListButton {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #007BFF;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      border: none;
+      transition: background-color 0.3s ease;
+  
+      &:hover {
+        background-color: #0056B3;
+      }
+    }
+  
+    .logoutButton {
+      position: absolute;
+      bottom: 20px;
+      right: 20px; /* Keičiame į dešinę apačią */
+      background-color: #dc3545;
+      color: white;
+      width: 15px; /* Nustatome fiksuotą plotį */
+      height: 15px; /* Nustatome fiksuotą aukštį */
+      border-radius: 50%; /* Apykaitinė forma */
+      cursor: pointer;
+      font-weight: bold;
+      border: none;
+      display: flex; /* Sukursime lankelį */
+      justify-content: center; /* Centruosime horizontaliai */
+      align-items: center; /* Centruosime vertikaliai */
+      transition: background-color 0.3s ease;
+    
+      &:hover {
+        background-color: #bd2130;
+      }
+    
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 20px;
+        background-color: white;
+        transform-origin: center;
+      }
+    
+      &::before {
+        transform: rotate(45deg);
+      }
+    
+      &::after {
+        transform: rotate(-45deg);
+      }
+    }
+    
+  
+    .form {
+      padding: 1rem;
+    }
+  
+    .formGroup {
+      margin-bottom: 1rem;
+    }
+  
+    .inputField {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+  
+    .error {
+      color: red;
+    }
+  
+    .submitButton {
+      background-color: #007BFF;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+  
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+  
