@@ -60,12 +60,12 @@ const WorkForm = () => {
         {({ isSubmitting, setFieldValue }) => (
           <Form className="form">
             <div className="formGroup">
-              <label>Vardas</label>
+              <label>Pavadinimas</label>
               <Field name="title" type="text" className="inputField" />
               <ErrorMessage name="title" component="div" className="error" />
             </div>
             <div className="formGroup">
-              <label>Pavardė</label>
+              <label>Aprašymas</label>
               <Field name="desctiption" type="text" className="inputField" />
               <ErrorMessage name="description" component="div" className="error" />
             </div>
