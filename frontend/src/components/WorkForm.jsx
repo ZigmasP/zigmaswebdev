@@ -6,8 +6,8 @@ import "./WorkForm.scss";
 
 const workSchema = Yup.object().shape({
   title: Yup.string().required('Pavadinimas privalomas'),
-  description: Yup.string().required('Aprašymas privaloma'),
-  photo: Yup.date().required('Nuotrauka privaloma'),
+  description: Yup.string().required('Aprašymas privalomas'),
+  photo: Yup.string().required('Nuotrauka privaloma'),
 });
 
 const WorkForm = () => {
@@ -20,7 +20,7 @@ const WorkForm = () => {
       formData.append('title', values.title);
       formData.append('description', values.description);
 
-      const response = await axios.post('http://127.0.0.1:3000/add-work', formData, {
+      const response = await axios.post('http://127.0.0.1:3000/works', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -42,7 +42,7 @@ const WorkForm = () => {
   return (
     <div className="workFormContainer">
       <h2>Pridėti darbą</h2>
-      <button onClick={handleLogout} className="ogoutButton">
+      <button onClick={handleLogout} className="logoutButton">
         X
       </button>
       <button onClick={() => navigate('/works')} className="workListButton">
@@ -66,7 +66,7 @@ const WorkForm = () => {
             </div>
             <div className="formGroup">
               <label>Aprašymas</label>
-              <Field name="desctiption" type="text" className="inputField" />
+              <Field name="description" type="text" className="inputField" />
               <ErrorMessage name="description" component="div" className="error" />
             </div>
             <div className="formGroup">

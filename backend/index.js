@@ -1,24 +1,23 @@
 require("dotenv").config();
 const express = require("express");
 const mysql = require("mysql2");
-const bodyParser = require("body-parser");
-const multer = require("multer");
-const nodemailer = require("nodemailer");
 const cors = require("cors");
-const helmet = require("helmet");
-const { google } = require("googleapis");
-const jwt = require("jsonwebtoken");
-const fs = require("fs");
+const multer = require("multer");
 const path = require("path");
-const e = require("express");
+const fs = require("fs");
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
+// Sukuriame "uploads" katalogą, jei jis neegzistuoja
+const uploadsPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath);
+}
+
+app.use(express.json());
 app.use(cors());
-app.use(helmet());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/uploads', express.static(uploadsPath));
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -36,252 +35,84 @@ db.connect((err) => {
   console.log("Sėkmingai prisijungta prie MariaDB duomenų bazės.");
 });
 
-//jei reikai sukuriamas uploads katalogas
-if (!fs.existsSync('uploads/')) {
-  fs.mkdirSync('uploads/');
-}
-
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
+  destination: function (req, file, cb) {
+    cb(null, uploadsPath);
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const extension = path.extname(file.originalname);
+    cb(null, `photo-${uniqueSuffix}${extension}`);
   },
 });
-const upload = multer({ storage });
 
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token == null) return res.sendStatus(401);
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
+const upload = multer({ storage: storage });
 
-const isAdmin = (req, res, next) => {
-  if (req.user && req.user.role === 'admin') {
-    next();
-  } else {
-    res.sendStatus(403);
-  }
-};
-
-app.get("/gallery", (req, res) => {
-  fs.readdir("uploads/", (err, files) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to load gallery" });
-    }
-    res.status(200).json(files);
-  });
-});
-
-app.post("/login", (req, res) => {
-  const username = req.body.username;
-  const user = { name: username, role: 'admin' };
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1h",
-  });
-  res.json({ accessToken });
-});
-
-//CRUD operacijos failams
-app.post("/files", authenticateToken, upload.single("file"), (req, res) => {
-  const file = req.file;
-  if (!file) {
-    return res.status(400).json({ message: "Failas neįkeltas" });
-  }
-
-  const sql = "INSERT INTO files (filename, filepath) VALUES (?, ?)";
-  db.query(sql, [file.filename, file.path], (err, result) => {
-    if (err) {
-      return res
-        .status(500)
-        .json({ error: "Klaida išsaugant failą duomenų bazėje" });
-    }
-    res
-      .status(201)
-      .json({ message: "Failas įkeltas ir sėkmingai išsaugotas", file });
-  });
-});
-
-app.delete("/files/:id", authenticateToken, (req, res) => {
-  const sql = "DELETE FROM files WHERE id = ?";
-  db.query(sql, [req.params.id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to delete file" });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "File not found" });
-    }
-    res.status(200).json({ message: "File deleted successfully" });
-  });
-});
-//CRUD operacijos darbams
-app.post("/works", authenticateToken, upload.single("image"), (req, res) => {
+app.post("/works", upload.single("photo"), (req, res) => {
   const { title, description } = req.body;
-  const image = req.file;
+  const photo = req.file ? req.file.filename : null;
 
-  if (!image) {
-    return res.status(400).json({ message: "Nuotrauka neįkelta" });
-  }
+  const query = 'INSERT INTO works (title, description, photo) VALUES (?, ?, ?)';
 
-  const sql = "INSERT INTO works (title, description, image_path) VALUES (?, ?, ?)";
-  db.query(sql, [title, description, image.path], (err, result) => {
+  db.query(query, [title, description, photo], (err, results) => {
     if (err) {
-      return res.status(500).json({ error: "Klaida išsaugant darbą duomenų bazėje" });
+      console.error('Klaida įkeliant duomenis:', err);
+      return res.status(500).json({ error: 'Nepavyko įkelti į duomenų bazę.' });
     }
-    res.status(201).json({ message: "Darbas įkeltas ir sėkmingai išsaugotas", work: { title, description, image_path: image.path } });
+    
+    res.status(200).json({
+      message: 'Duomenys sėkmingai įrašyti.',
+      insertId: results.insertId,
+    });
   });
 });
 
 app.get("/works", (req, res) => {
-  const sql = "SELECT * FROM works";
-  db.query(sql, (err, results) => {
+  const query = "SELECT * FROM works";
+
+  db.query(query, (err, results) => {
     if (err) {
-      return res.status(500).json({ error: "Failed to load works" });
+      console.error('Klaida gaunant duomenis:', err);
+      return res.status(500).json({ error: "Nepavyko gauti duomenų." });
     }
     res.status(200).json(results);
   });
 });
 
-app.get("/works/:id", (req, res) => {
-  const sql = "SELECT * FROM works WHERE id = ?";
-  db.query(sql, [req.params.id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to load work" });
-    }
-    if (result.length === 0) {
-      return res.status(404).json({ message: "Work not found" });
-    }
-    res.status(200).json(result[0]);
-  });
-});
-
-app.put("/works/:id", authenticateToken, upload.single("image"), (req, res) => {
+app.put("/works/:id", upload.single("photo"), (req, res) => {
+  const workId = req.params.id;
   const { title, description } = req.body;
-  const image = req.file;
+  const photo = req.file ? req.file.filename : null;
 
-  const sqlSelect = "SELECT * FROM works WHERE id = ?";
-  db.query(sqlSelect, [req.params.id], (err, result) => {
+  const query = "UPDATE works SET title = ?, description = ?, photo = ? WHERE id = ?";
+
+  db.query(query, [title, description, photo, workId], (err, results) => {
     if (err) {
-      return res.status(500).json({ error: "Failed to load work" });
+      console.error('Klaida atnaujinant duomenis:', err);
+      return res.status(500).json({ error: 'Nepavyko atnaujinti įrašo.' });
     }
-    if (result.length === 0) {
-      return res.status(404).json({ message: "Work not found" });
-    }
-
-    const work = result[0];
-    const updatedTitle = title || work.title;
-    const updatedDescription = description || work.description;
-    const updatedImagePath = image ? image.path : work.image_path;
-
-    const sqlUpdate = "UPDATE works SET title = ?, description = ?, image_path = ? WHERE id = ?";
-    db.query(sqlUpdate, [updatedTitle, updatedDescription, updatedImagePath, req.params.id], (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to update work" });
-      }
-      res.status(200).json({ message: "Work updated successfully", work: { id: req.params.id, title: updatedTitle, description: updatedDescription, image_path: updatedImagePath } });
+    res.status(200).json({
+      message: 'Įrašas sėkmingai atnaujintas.',
+      affectedRows: results.affectedRows,
     });
   });
 });
 
-app.delete("/works/:id", authenticateToken, isAdmin, (req, res) => {
-  const sql = "DELETE FROM works WHERE id = ?";
-  db.query(sql, [req.params.id], (err, result) => {
+app.delete("/works/:id", (req, res) => {
+  const workId = req.params.id;
+  const query = "DELETE FROM works WHERE id = ?";
+  db.query(query, [workId], (err, results) => {
     if (err) {
-      return res.status(500).json({ error: "Failed to delete work" });
+      console.error('Klaida trinant duomenis:', err);
+      return res.status(500).json({ error: "Nepavyko ištrinti duomenų." });
     }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "Work not found" });
-    }
-    res.status(200).json({ message: "Work deleted successfully" });
-  });
-});
-
-//Gmail SMTP mustatymai
-const oAuth2Client = new google.auth.OAuth2(
-  process.env.CLIENT_ID,
-  process.env.CLIENT_SECRET,
-  process.env.REDIRECT_URI
-);
-oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
-
-app.post("/send", authenticateToken, async (req, res) => {
-  const { name, phone, service, message } = req.body;
-  try {
-    const accessToken = await oAuth2Client.getAccessToken();
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: "OAuth2",
-        user: process.env.EMAIL_USER,
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
-        accessToken: accessToken.token,
-      },
+    res.status(200).json({
+      message: 'Įrašas sėkmingai ištrintas.',
+      affectedRows: results.affectedRows,
     });
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.RECEIVER_EMAIL,
-      subject: "New Contact Form Submission",
-      text: `
-        Vardas: ${name}
-        Telefono nr.: ${phone}
-        Paslauga: ${service}
-        Žinutė: ${message}
-      `,
-    };
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ message: "El. laiškas išsiųstas sėkmingai!" });
-  } catch (error) {
-    console.error("Klaida siunčiant el. laišką:", error);
-    res.status(500).json({ error: "Įvyko klaida siunčiant el. laišką." });
-  }
-});
-
-app.get("/files", (req, res) => {
-  const sql = "SELECT * FROM files";
-  db.query(sql, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to load files" });
-    }
-    res.status(200).json(results);
   });
 });
-
-app.get("/files/:id", (req, res) => {
-  const sql = "SELECT * FROM files WHERE id = ?";
-  db.query(sql, [req.params.id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to load file" });
-    }
-    if (result.length === 0) {
-      return res.status(404).json({ message: "File not found" });
-    }
-    res.status(200).json(result[0]);
-  });
-});
-
-app.put("/files/:id", authenticateToken, (req, res) => {
-  const { filename } = req.body;
-  const sql = "UPDATE files SET filename = ? WHERE id = ?";
-  db.query(sql, [filename, req.params.id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to update file" });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "File not found" });
-    }
-    res.status(200).json({ message: "File updated successfully" });
-  });
-});
-
-
+  
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Serveris veikia ant porto ${port}`);
 });

@@ -40,7 +40,7 @@ const Works = () => {
 
   const handleEditSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.put(`http://127.0.0.1:3000/works/${editingWork.id}`, values);
+      const response = await axios.put(`http://127.0.0.1:3000/add-works/${editingWork.id}`, values);
       setWorks((prev) => prev.map((work) => (work.id === editingWork.id ? { ...work, ...response.data } : work)));
       setEditingWork(null);
     } catch (error) {
