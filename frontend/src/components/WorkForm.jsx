@@ -5,9 +5,9 @@ import * as Yup from "yup";
 import "./WorkForm.scss";
 
 const workSchema = Yup.object().shape({
-  firstName: Yup.string().required('Pavadinimas privalomas'),
-  lastName: Yup.string().required('Aprašymas privaloma'),
-  birthDate: Yup.date().required('Nuotrauka privaloma'),
+  title: Yup.string().required('Pavadinimas privalomas'),
+  description: Yup.string().required('Aprašymas privaloma'),
+  photo: Yup.date().required('Nuotrauka privaloma'),
 });
 
 const WorkForm = () => {
@@ -27,7 +27,7 @@ const WorkForm = () => {
       });
       console.log('Duomenys įterpti:', response.data);
       resetForm();
-      navigate('/works');
+      navigate('/mano-darbai');
     } catch (error) {
       console.error('Klaida siunčiant duomenis:', error);
       setSubmitting(false);

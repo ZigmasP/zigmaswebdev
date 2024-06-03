@@ -12,10 +12,11 @@ const workSchema = Yup.object().shape({
 
 const Works = () => {
   const [works, setWorks] = useState([]); // darbų sąrašas
-  const [editingWork, setEditingWork] = useState(null); // Redaguojamas derbas
+  const [editingWork, setEditingWork] = useState({ title: '', description: '', photo: null }); // Pradinės reikšmės kaip tuščios eilutės
+ // Redaguojamas derbas
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:3000/clients') 
+    axios.get('http://127.0.0.1:3000/works') 
       .then((response) => {
         setWorks(response.data); // Įrašyti duomenis
       })
