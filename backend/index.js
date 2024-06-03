@@ -10,6 +10,7 @@ const { google } = require("googleapis");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
+const e = require("express");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ const db = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  charset: 'utf8mb4'
 });
 
 db.connect((err) => {
@@ -34,6 +36,7 @@ db.connect((err) => {
   console.log("Sėkmingai prisijungta prie MariaDB duomenų bazės.");
 });
 
+//jei reikai sukuriamas uploads katalogas
 if (!fs.existsSync('uploads/')) {
   fs.mkdirSync('uploads/');
 }
@@ -59,6 +62,14 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+const isAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+};
+
 app.get("/gallery", (req, res) => {
   fs.readdir("uploads/", (err, files) => {
     if (err) {
@@ -70,13 +81,128 @@ app.get("/gallery", (req, res) => {
 
 app.post("/login", (req, res) => {
   const username = req.body.username;
-  const user = { name: username };
+  const user = { name: username, role: 'admin' };
   const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: "1h",
   });
   res.json({ accessToken });
 });
 
+//CRUD operacijos failams
+app.post("/files", authenticateToken, upload.single("file"), (req, res) => {
+  const file = req.file;
+  if (!file) {
+    return res.status(400).json({ message: "Failas neįkeltas" });
+  }
+
+  const sql = "INSERT INTO files (filename, filepath) VALUES (?, ?)";
+  db.query(sql, [file.filename, file.path], (err, result) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ error: "Klaida išsaugant failą duomenų bazėje" });
+    }
+    res
+      .status(201)
+      .json({ message: "Failas įkeltas ir sėkmingai išsaugotas", file });
+  });
+});
+
+app.delete("/files/:id", authenticateToken, (req, res) => {
+  const sql = "DELETE FROM files WHERE id = ?";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to delete file" });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "File not found" });
+    }
+    res.status(200).json({ message: "File deleted successfully" });
+  });
+});
+//CRUD operacijos darbams
+app.post("/works", authenticateToken, upload.single("image"), (req, res) => {
+  const { title, description } = req.body;
+  const image = req.file;
+
+  if (!image) {
+    return res.status(400).json({ message: "Nuotrauka neįkelta" });
+  }
+
+  const sql = "INSERT INTO works (title, description, image_path) VALUES (?, ?, ?)";
+  db.query(sql, [title, description, image.path], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Klaida išsaugant darbą duomenų bazėje" });
+    }
+    res.status(201).json({ message: "Darbas įkeltas ir sėkmingai išsaugotas", work: { title, description, image_path: image.path } });
+  });
+});
+
+app.get("/works", (req, res) => {
+  const sql = "SELECT * FROM works";
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to load works" });
+    }
+    res.status(200).json(results);
+  });
+});
+
+app.get("/works/:id", (req, res) => {
+  const sql = "SELECT * FROM works WHERE id = ?";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to load work" });
+    }
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Work not found" });
+    }
+    res.status(200).json(result[0]);
+  });
+});
+
+app.put("/works/:id", authenticateToken, upload.single("image"), (req, res) => {
+  const { title, description } = req.body;
+  const image = req.file;
+
+  const sqlSelect = "SELECT * FROM works WHERE id = ?";
+  db.query(sqlSelect, [req.params.id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to load work" });
+    }
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Work not found" });
+    }
+
+    const work = result[0];
+    const updatedTitle = title || work.title;
+    const updatedDescription = description || work.description;
+    const updatedImagePath = image ? image.path : work.image_path;
+
+    const sqlUpdate = "UPDATE works SET title = ?, description = ?, image_path = ? WHERE id = ?";
+    db.query(sqlUpdate, [updatedTitle, updatedDescription, updatedImagePath, req.params.id], (err, result) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to update work" });
+      }
+      res.status(200).json({ message: "Work updated successfully", work: { id: req.params.id, title: updatedTitle, description: updatedDescription, image_path: updatedImagePath } });
+    });
+  });
+});
+
+app.delete("/works/:id", authenticateToken, isAdmin, (req, res) => {
+  const sql = "DELETE FROM works WHERE id = ?";
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to delete work" });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Work not found" });
+    }
+    res.status(200).json({ message: "Work deleted successfully" });
+  });
+});
+
+//Gmail SMTP mustatymai
 const oAuth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
   process.env.CLIENT_SECRET,
@@ -118,25 +244,6 @@ app.post("/send", authenticateToken, async (req, res) => {
   }
 });
 
-app.post("/files", authenticateToken, upload.single("file"), (req, res) => {
-  const file = req.file;
-  if (!file) {
-    return res.status(400).json({ message: "Failas neįkeltas" });
-  }
-
-  const sql = "INSERT INTO files (filename, filepath) VALUES (?, ?)";
-  db.query(sql, [file.filename, file.path], (err, result) => {
-    if (err) {
-      return res
-        .status(500)
-        .json({ error: "Klaida išsaugant failą duomenų bazėje" });
-    }
-    res
-      .status(201)
-      .json({ message: "Failas įkeltas ir sėkmingai išsaugotas", file });
-  });
-});
-
 app.get("/files", (req, res) => {
   const sql = "SELECT * FROM files";
   db.query(sql, (err, results) => {
@@ -174,18 +281,6 @@ app.put("/files/:id", authenticateToken, (req, res) => {
   });
 });
 
-app.delete("/files/:id", authenticateToken, (req, res) => {
-  const sql = "DELETE FROM files WHERE id = ?";
-  db.query(sql, [req.params.id], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: "Failed to delete file" });
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "File not found" });
-    }
-    res.status(200).json({ message: "File deleted successfully" });
-  });
-});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

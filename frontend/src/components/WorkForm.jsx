@@ -5,9 +5,9 @@ import * as Yup from "yup";
 import "./WorkForm.scss";
 
 const workSchema = Yup.object().shape({
-  firstName: Yup.string().required('Vardas privalomas'),
-  lastName: Yup.string().required('Pavardė privaloma'),
-  birthDate: Yup.date().required('Gimimo data privaloma'),
+  firstName: Yup.string().required('Pavadinimas privalomas'),
+  lastName: Yup.string().required('Aprašymas privaloma'),
+  birthDate: Yup.date().required('Nuotrauka privaloma'),
 });
 
 const WorkForm = () => {
@@ -17,9 +17,8 @@ const WorkForm = () => {
     try {
       const formData = new FormData();
       formData.append('photo', values.photo);
-      formData.append('firstName', values.firstName);
-      formData.append('lastName', values.lastName);
-      formData.append('birthDate', values.birthDate);
+      formData.append('title', values.title);
+      formData.append('description', values.description);
 
       const response = await axios.post('http://127.0.0.1:3000/add-work', formData, {
         headers: {
@@ -51,9 +50,8 @@ const WorkForm = () => {
       </button>
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: '',
-          birthDate: '',
+          title: '',
+          description: '',
           photo: null,
         }}
         validationSchema={workSchema}
@@ -63,18 +61,13 @@ const WorkForm = () => {
           <Form className="form">
             <div className="formGroup">
               <label>Vardas</label>
-              <Field name="firstName" type="text" className="inputField" />
-              <ErrorMessage name="firstName" component="div" className="error" />
+              <Field name="title" type="text" className="inputField" />
+              <ErrorMessage name="title" component="div" className="error" />
             </div>
             <div className="formGroup">
               <label>Pavardė</label>
-              <Field name="lastName" type="text" className="inputField" />
-              <ErrorMessage name="lastName" component="div" className="error" />
-            </div>
-            <div className="formGroup">
-              <label>Gimimo data</label>
-              <Field name="birthDate" type="date" className="inputField" />
-              <ErrorMessage name="birthDate" component="div" className="error" />
+              <Field name="desctiption" type="text" className="inputField" />
+              <ErrorMessage name="description" component="div" className="error" />
             </div>
             <div className="formGroup">
               <label>Nuotrauka</label>
