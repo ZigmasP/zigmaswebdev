@@ -18,53 +18,73 @@
       color: #0056B3; /* Keičiame spalvą, kai pele nukeliaujama ant mygtuko */
     }
   }
-}
 
-.worksFlexContainer {
-  display: flex;
-  flex-wrap: wrap; // Leidžia automatiškai pereiti į naujas eilutes
-}
+  .worksFlexContainer {
+    display: flex;
+    flex-wrap: wrap; /* Leidžia automatiškai pereiti į naujas eilutes */
+  }
 
-.workItem {
-  flex: 0 1 18%; // Užima maždaug 18% pločio
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-  background-color: white;
-  border-radius: 4px;
-  margin-right: 1.5%;
-  margin-bottom: 1.5%; // Fiksuotas tarpas tarp elementų
-}
+  .workItem {
+    flex: 0 1 18%; /* Užima maždaug 18% pločio */
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    margin-right: 1.5%;
+    margin-bottom: 1.5%; /* Fiksuotas tarpas tarp elementų */
+  }
 
-.formGroup {
-  margin-bottom: 1rem; 
-}
+  .workItemContainer {
+    display: flex;
+    flex-direction: column;
+  }
 
-.inputField {
-  width: 100%;
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
+  .workPhoto {
+    max-width: 100%;
+    max-height: 200px;
+    margin-bottom: 10px;
+  }
 
-.error {
-  color: red;
-}
+  .workTitle {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
 
-.editButton, .deleteButton {
-  width: 80px;
-  font-size: 10px;
-  background-color: #007BFF;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  .workDescription {
+    margin-bottom: 10px;
+  }
 
-.deleteButton {
-  background-color: #dc3545; // Raudona spalva trinimui
-}
+  .formGroup {
+    margin-bottom: 1rem;
+  }
 
-.editButton {
-  background-color: #28a745; // Žalia spalva redagavimui
-  margin-right: 10px;
+  .inputField {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  .error {
+    color: red;
+  }
+
+  .editButton, .deleteButton {
+    width: 80px;
+    font-size: 10px;
+    background-color: #007BFF;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .deleteButton {
+    background-color: #dc3545; /* Raudona spalva trinimui */
+  }
+
+  .editButton {
+    background-color: #28a745; /* Žalia spalva redagavimui */
+    margin-right: 10px;
+  }
 }

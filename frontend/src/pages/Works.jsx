@@ -1,27 +1,27 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import "./Works.scss";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import './Works.scss'; // Importuojame stiliaus failą
 
 const workSchema = Yup.object().shape({
   title: Yup.string().required('Pavadinimas privalomas'),
-  description: Yup.string().required('Aprašymas privaloma'),
+  description: Yup.string().required('Aprašymas privalomas'),
+  photo: Yup.string().required('Nuotrauka privaloma'),
 });
 
 const Works = () => {
-  const [works, setWorks] = useState([]); // darbų sąrašas
-  const [editingWork, setEditingWork] = useState({ title: '', description: '', photo: null }); // Pradinės reikšmės kaip tuščios eilutės
- // Redaguojamas derbas
+  const [works, setWorks] = useState([]); // Darbų sąrašas
+  const [editingWork, setEditingWork] = useState(null); // Redaguojamas darbas
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:3000/works') 
+    axios.get('http://127.0.0.1:3000/works')
       .then((response) => {
         setWorks(response.data); // Įrašyti duomenis
       })
       .catch((error) => {
-        console.error('Klaida gaunant duomenis:', error);
+        console.error('Klaida gaunant darbus:', error);
       });
   }, []);
 
@@ -30,7 +30,7 @@ const Works = () => {
       await axios.delete(`http://127.0.0.1:3000/works/${id}`);
       setWorks((prev) => prev.filter((work) => work.id !== id));
     } catch (error) {
-      console.error('Klaida trinant duomenis:', error);
+      console.error('Klaida trinant darbą:', error);
     }
   };
 
@@ -40,30 +40,24 @@ const Works = () => {
 
   const handleEditSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.put(`http://127.0.0.1:3000/add-works/${editingWork.id}`, values);
+      const response = await axios.put(`http://127.0.0.1:3000/works/${editingWork.id}`, values);
       setWorks((prev) => prev.map((work) => (work.id === editingWork.id ? { ...work, ...response.data } : work)));
       setEditingWork(null);
     } catch (error) {
-      console.error('Klaida redaguojant failus:', error);
+      console.error('Klaida redaguojant darbą:', error);
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="worksContainer">
+    <div className="workListContainer">
       <h2>Darbų sąrašas</h2>
-      <Link to="/add-work" className="addWorkLink">Pridėti naują darbą</Link> {/* Nuoroda į „ClientForm“ su pridėtu stiliumi */}
+      <Link to="/add-work" className="addWorkLink">Pridėti naują darbą</Link> {/* Nuoroda į „WorkForm“ su pridėtu stiliumi */}
 
       <div className="worksFlexContainer">
         {works.map((work) => (
           <div key={work.id} className="workItem">
-            {work.photo && (
-              <img
-                src={`http://127.0.0.1:3000/uploads/${work.photo}`}
-                alt={`${work.title} ${work.description}`}
-              />
-            )}
             {editingWork && editingWork.id === work.id ? (
               <Formik
                 initialValues={work}
@@ -80,7 +74,12 @@ const Works = () => {
                     <div className="formGroup">
                       <label>Aprašymas</label>
                       <Field name="description" type="text" className="inputField" />
-                      <ErrorMessage name="desription" component="div" className="error" />
+                      <ErrorMessage name="description" component="div" className="error" />
+                    </div>
+                    <div className="formGroup">
+                      <label>Nuotrauka</label>
+                      <Field name="photo" type="text" className="inputField" />
+                      <ErrorMessage name="photo" component="div" className="error" />
                     </div>
                     <button type="submit" disabled={isSubmitting} className="submitButton">
                       Išsaugoti
@@ -90,7 +89,7 @@ const Works = () => {
               </Formik>
             ) : (
               <>
-                <p>{`${work.title} ${work.description}`}</p>
+                <p>{`${work.title} - ${work.description}`}</p>
                 <button onClick={() => startEditing(work)} className="editButton">Redaguoti</button>
                 <button onClick={() => handleDelete(work.id)} className="deleteButton">Trinti</button>
               </>
