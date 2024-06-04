@@ -1,90 +1,152 @@
 .workListContainer {
   padding: 1rem;
   background-color: #f1f1f1;
-  position: relative; /* Pridedame pozicijos reikšmę, kad būtų galima pozicionuoti mygtuką */
+  position: relative;
 
   .addWorkLink {
     position: absolute;
     top: 20px;
-    right: 20px; /* Pozicionuojame mygtuką į dešinę viršų */
-    font-size: 14px; /* Sumažiname šriftą */
-    color: #007BFF; /* Spalva */
+    right: 20px;
+    font-size: 14px;
+    color: #007BFF;
     cursor: pointer;
     font-weight: bold;
-    text-decoration: none; /* Pašaliname numatytąją nuorodos stilių */
-    transition: color 0.3s ease; /* Skirta efektui, kai pabraukiama pele */
+    text-decoration: none;
+    transition: color 0.3s ease;
 
     &:hover {
-      color: #0056B3; /* Keičiame spalvą, kai pele nukeliaujama ant mygtuko */
+      color: #0056B3;
     }
   }
 
   .worksFlexContainer {
     display: flex;
-    flex-wrap: wrap; /* Leidžia automatiškai pereiti į naujas eilutes */
+    flex-wrap: wrap;
+    max-width: 1200px; /* Fiksuotas plotis */
+    margin: 0 auto; /* Centruojame konteinerį */
   }
 
   .workItem {
-    flex: 0 1 18%; /* Užima maždaug 18% pločio */
-    padding: 1rem;
+    flex: 0 1 100%;
     border-bottom: 1px solid #ddd;
     background-color: white;
-    border-radius: 4px;
-    margin-right: 1.5%;
-    margin-bottom: 1.5%; /* Fiksuotas tarpas tarp elementų */
-  }
-
-  .workItemContainer {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .workPhoto {
-    max-width: 100%;
-    max-height: 200px;
-    margin-bottom: 10px;
-  }
-
-  .workTitle {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-
-  .workDescription {
-    margin-bottom: 10px;
-  }
-
-  .formGroup {
     margin-bottom: 1rem;
+
+    .workItemContainer {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .workPhoto {
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+      margin-bottom: 5px;
+    }
+
+    .workTitle {
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .workDescription {
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .formGroup {
+      margin-bottom: 1rem;
+    }
+
+    .inputField {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .editButton, .deleteButton {
+      width: 80px;
+      font-size: 10px;
+      background-color: #007BFF;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .deleteButton {
+      background-color: #dc3545;
+    }
+
+    .editButton {
+      background-color: #28a745;
+      margin-right: 10px;
+      margin-left: 1rem;
+    }
+
+    .submitButton {
+      background-color: #28a745;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .notification {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .notification.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .notification.error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
   }
 
-  .inputField {
-    width: 100%;
-    padding: 0.5rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+  @media (min-width: 576px) {
+    .workItem {
+      flex: 0 1 48%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
   }
 
-  .error {
-    color: red;
+  @media (min-width: 768px) {
+    .workItem {
+      flex: 0 1 30%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
   }
 
-  .editButton, .deleteButton {
-    width: 80px;
-    font-size: 10px;
-    background-color: #007BFF;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
+  @media (min-width: 992px) {
+    .workItem {
+      flex: 0 1 23%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
   }
 
-  .deleteButton {
-    background-color: #dc3545; /* Raudona spalva trinimui */
-  }
-
-  .editButton {
-    background-color: #28a745; /* Žalia spalva redagavimui */
-    margin-right: 10px;
+  @media (min-width: 1200px) {
+    .workItem {
+      flex: 0 1 18%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
   }
 }

@@ -82,7 +82,11 @@ app.get("/works", (req, res) => {
 app.put("/works/:id", upload.single("photo"), (req, res) => {
   const workId = req.params.id;
   const { title, description } = req.body;
-  const photo = req.file ? req.file.filename : null;
+  const photo = req.file ? req.file.filename : req.body.existingPhoto;
+
+  if (!photo) {
+    return res.status(400).json({ error: 'Nuotrauka privaloma' });
+  }
 
   const query = "UPDATE works SET title = ?, description = ?, photo = ? WHERE id = ?";
 
@@ -97,6 +101,7 @@ app.put("/works/:id", upload.single("photo"), (req, res) => {
     });
   });
 });
+
 
 app.delete("/works/:id", (req, res) => {
   const workId = req.params.id;
