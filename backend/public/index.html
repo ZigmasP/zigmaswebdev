@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Works Admin</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Works Admin</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="form-container">
-        <h3>Pridėti darbą</h3>
-        <form id="work-form">
-            <div>
-                <label for="title">Pavadinimas</label>
-                <input type="text" id="title" name="title" required>
-            </div>
-            <div>
-                <label for="description">Aprašymas</label>
-                <textarea id="description" name="description" required></textarea>
-            </div>
-            <div>
-                <label for="photo">Nuotrauka</label>
-                <input type="file" id="photo" name="photo" required>
-            </div>
-            <button type="submit">Pridėti</button>
-        </form>
-    </div>
-    <div class="works-container" id="works-container">
-        <h2>Mano darbai</h2>
-        <div id="works-list"></div>
-    </div>
-    <script src="app.js"></script>
+  <div class="form-container">
+    <h3 id="form-title">Pridėti darbą</h3>
+    <form id="work-form">
+      <div>
+        <label for="title">Pavadinimas</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div>
+        <label for="description">Aprašymas</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+      <div>
+        <label for="photo">Nuotrauka</label>
+        <input type="file" id="photo" name="photo" required>
+      </div>
+      <button type="submit" id="submit-button">Pridėti</button>
+    </form>
+  </div>
+  <div class="works-container" id="works-container">
+    <h2>Mano darbai</h2>
+    <input type="text" id="search" placeholder="Ieškoti darbų...">
+    <button id="search-button">Ieškoti</button>
+    <div id="works-list"></div>
+  </div>
+  <script src="app.js"></script>
 </body>
 </html>

@@ -110,15 +110,41 @@ app.put("/works/:id", upload.single("photo"), (req, res) => {
 
 app.delete("/works/:id", (req, res) => {
   const workId = req.params.id;
-  const query = "DELETE FROM works WHERE id = ?";
-  db.query(query, [workId], (err, results) => {
+
+  // Pirmiausia gauname darbo informaciją, kad gautume failo pavadinimą
+  const getPhotoQuery = "SELECT photo FROM works WHERE id = ?";
+  db.query(getPhotoQuery, [workId], (err, results) => {
     if (err) {
-      console.error('Klaida trinant duomenis:', err);
-      return res.status(500).json({ error: "Nepavyko ištrinti duomenų." });
+      console.error('Klaida gaunant failo informaciją:', err);
+      return res.status(500).json({ error: "Nepavyko gauti duomenų." });
     }
-    res.status(200).json({
-      message: 'Įrašas sėkmingai ištrintas.',
-      affectedRows: results.affectedRows,
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Įrašas nerastas." });
+    }
+
+    const photo = results[0].photo;
+
+    // Ištriname failą iš failų sistemos
+    const photoPath = path.join(uploadsPath, photo);
+    fs.unlink(photoPath, (err) => {
+      if (err) {
+        console.error('Klaida trinant failą:', err);
+        return res.status(500).json({ error: "Nepavyko ištrinti failo." });
+      }
+
+      // Tada ištriname įrašą iš duomenų bazės
+      const deleteQuery = "DELETE FROM works WHERE id = ?";
+      db.query(deleteQuery, [workId], (err, results) => {
+        if (err) {
+          console.error('Klaida trinant duomenis:', err);
+          return res.status(500).json({ error: "Nepavyko ištrinti duomenų." });
+        }
+        res.status(200).json({
+          message: 'Įrašas sėkmingai ištrintas.',
+          affectedRows: results.affectedRows,
+        });
+      });
     });
   });
 });
