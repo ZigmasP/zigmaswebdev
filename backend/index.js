@@ -19,9 +19,10 @@ if (!fs.existsSync(uploadsPath)) {
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(uploadsPath));
-app.use(compression()); //Įjungia kompresiją visoms HTTP užklausoms
+app.use(compression()); // Įjungia kompresiją visoms HTTP užklausoms
+app.use(express.static(path.join(__dirname, 'public'))); // Aptarnauja statinius failus iš "public" katalogo
 
-//Duomenų bazės sujungimas
+// Duomenų bazės sujungimas
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -38,7 +39,7 @@ db.connect((err) => {
   console.log("Sėkmingai prisijungta prie MariaDB duomenų bazės.");
 });
 
-//Multer konfigūracija
+// Multer konfigūracija
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadsPath);
@@ -52,7 +53,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-//Maršrutai
+// Maršrutai
 app.post("/works", upload.single("photo"), (req, res) => {
   const { title, description } = req.body;
   const photo = req.file ? req.file.filename : null;
@@ -107,7 +108,6 @@ app.put("/works/:id", upload.single("photo"), (req, res) => {
   });
 });
 
-
 app.delete("/works/:id", (req, res) => {
   const workId = req.params.id;
   const query = "DELETE FROM works WHERE id = ?";
@@ -122,7 +122,7 @@ app.delete("/works/:id", (req, res) => {
     });
   });
 });
-  
+
 app.listen(port, () => {
   console.log(`Serveris veikia ant porto ${port}`);
 });
