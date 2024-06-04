@@ -76,9 +76,10 @@ const Works = () => {
   };
 
   return (
-    <div className="workListContainer">
-     <Link to="/add-work" className="addWorkLink">Pridėti naują darbą</Link> {/* Nuoroda į „WorkForm“ su pridėtu stiliumi */}
+    <div>
+     <Link to="/add-work" className="addWorkLink">Pridėti naują darbą</Link> 
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
+    <div className="workListContainer">
       
       <div className="worksFlexContainer">
         {works.map((work) => (
@@ -136,6 +137,7 @@ const Works = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };

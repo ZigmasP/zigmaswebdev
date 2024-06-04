@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo.webp";
 import "./Header.scss";
 
 const Header = () => {
