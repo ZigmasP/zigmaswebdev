@@ -3,96 +3,102 @@ body {
     background-color: #80D0C7;
     background-image: linear-gradient(135deg, #80D0C7 0%, #0093E9 55%);
     margin: 0;
-    height: 100vh; /* Aukštis 100% naršyklės lango */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
-  .form-container {
-    max-width: 300px; /* Pakeista, kad būtų šiek tiek platesnė */
-    margin: 0 auto;
-    padding: 20px; /* Didesnė padding reikšmė */
-    background-color: #80D0C7;
-    background-image: linear-gradient(135deg, #80D0C7 0%, #0093E9 55%);
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex; /* Pridedame fleksinį išdėstymą */
+    justify-content: space-between; /* Lygiuojame elementus tarpais */
+  }
+  
+  .form-container,
+  .search-container,
+  .works-container {
+    width: 350px; /* Nustatome 300px pločio konteineriui */
+    background-color: transparent;
+    
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 10px; /* Vienuodi tarpai tarp konteinerių */
   }
   
-  .form-container h3 {
-    text-align: center; /* Centruoja antraštę */
-    margin-bottom: 1rem; /* Pridedame tarpus */
-  }
-  
-  .form-container form div {
-    margin-bottom: 1rem;
+  .form-container h3,
+  .search-container h2 {
+    text-align: center;
+    margin: 0 0 10px; /* Pašaliname viršutinį ir apatinį tarpus */
   }
   
   .form-container form label {
     display: block;
-    margin-bottom: 0.5rem; /* Pridedame tarpus */
+    margin-bottom: 10px; /* Pridedame tarpus tarp label ir input */
   }
   
   .form-container form input,
   .form-container form textarea,
-  .form-container form button {
+  .form-container form button,
+  .search-container input,
+  .search-container button {
     width: 100%;
-    padding: 0.5rem; /* Pridedame padding */
-    border: 1px solid #ccc;
-    border-radius: 4px; /* Kampai suapvalinti */
-    box-sizing: border-box;
-  }
-  
-  .form-container form button {
-    background-color: #0093E9;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .form-container form button:hover {
-    background-color: #007bb5;
+    margin-bottom: 10px; /* Pridedame tarpus tarp laukų */
   }
   
   .works-container {
-    padding: 20px;
+    flex: 1; /* Užtikrina, kad šis konteineris užimtų visas likusias erdves */
+    padding: 20px; /* Paslenka rezultatus į centrą */
   }
   
-  #search {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-  
-  #search-button {
-    background-color: #0093E9;
-    color: white;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-  }
-  
-  #search-button:hover {
-    background-color: #007bb5;
+  .worksFlexContainer {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 350px; /* Nustatome maksimalų pločių, kai nėra rezultatų */
+    margin: 0 auto; /* Centruojame rezultatus */
   }
   
   .work-item {
-    border: 1px solid #ccc;
-    padding: 1rem;
-    margin: 0.5rem;
+    flex: 0 1 calc(33.33% - 10px); /* Prieš tai buvo 18%, dabar 33.33% su 10px tarpais */
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+    margin-bottom: 20px; /* Pridėjome tarpą tarp darbų */
+    margin-right: 20px; /* Pridėjome tarpą tarp darbų */
+    box-sizing: border-box;
+    padding: 20px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
-  .work-item img {
-    max-width: 100%;
+  .work-item .workItemContainer {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .work-item .workPhoto {
+    width: 100%;
     height: auto;
+    max-height: 200px;
+  }
+  
+  .work-item .workTitle {
+    font-weight: bold;
+    margin-bottom: 10px; /* Pridėjome tarpą tarp pavadinimo ir aprašymo */
+    text-align: center;
+  }
+  
+  .work-item .workDescription {
+    margin-bottom: 10px; /* Pridėjome tarpą tarp aprašymo ir mygtukų */
+    text-align: center;
   }
   
   .work-item button {
-    margin-right: 0.5rem;
+    margin-right: 10px; /* Pridėjome tarpą tarp mygtukų */
   }
   

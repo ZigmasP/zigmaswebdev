@@ -7,29 +7,34 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="form-container">
-    <h3 id="form-title">Pridėti darbą</h3>
-    <form id="work-form">
-      <div>
-        <label for="title">Pavadinimas</label>
-        <input type="text" id="title" name="title" required>
-      </div>
-      <div>
-        <label for="description">Aprašymas</label>
-        <textarea id="description" name="description" required></textarea>
-      </div>
-      <div>
-        <label for="photo">Nuotrauka</label>
-        <input type="file" id="photo" name="photo" required>
-      </div>
-      <button type="submit" id="submit-button">Pridėti</button>
-    </form>
-  </div>
-  <div class="works-container" id="works-container">
-    <h2>Mano darbai</h2>
-    <input type="text" id="search" placeholder="Ieškoti darbų...">
-    <button id="search-button">Ieškoti</button>
-    <div id="works-list"></div>
+  <div class="container">
+    <div class="form-container">
+      <h3 id="form-title">Pridėti darbą</h3>
+      <form id="work-form">
+        <div>
+          <label for="title">Pavadinimas</label>
+          <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+          <label for="description">Aprašymas</label>
+          <textarea id="description" name="description" required></textarea>
+        </div>
+        <div>
+          <label for="photo">Nuotrauka</label>
+          <input type="file" id="photo" name="photo" required>
+        </div>
+        <button type="submit" id="submit-button">Pridėti</button>
+      </form>
+    </div>
+    <div class="search-container">
+      <h2>Mano darbai</h2>
+      <input type="text" id="search" placeholder="Ieškoti darbų...">
+      <button id="search-button">Ieškoti</button>
+    </div>
+    <div class="works-container" id="works-container">
+      <div id="works-list" class="worksFlexContainer"></div>
+      <button id="close-button" style="display: none;">Uždaryti</button>
+    </div>
   </div>
   <script src="app.js"></script>
 </body>
