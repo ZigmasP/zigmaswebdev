@@ -1,7 +1,9 @@
 .workListContainer {
   padding: 1rem;
-  background-color: #f1f1f1;
+  background-color: #80D0C7;
+  background-image: linear-gradient(135deg, #80D0C7 0%, #0093E9 55%);
   position: relative;
+  
 
   .addWorkLink {
     position: absolute;
@@ -20,6 +22,7 @@
   }
 
   .worksFlexContainer {
+    
     display: flex;
     flex-wrap: wrap;
     max-width: 1200px; /* Fiksuotas plotis */
@@ -28,6 +31,7 @@
 
   .workItem {
     flex: 0 1 100%;
+    width: 18%;
     border-bottom: 1px solid #ddd;
     background-color: white;
     margin-bottom: 1rem;
@@ -41,7 +45,6 @@
       width: 100%;
       height: auto;
       max-height: 200px;
-      margin-bottom: 5px;
     }
 
     .workTitle {
@@ -81,15 +84,17 @@
       margin-bottom: 10px;
     }
 
-    .deleteButton {
-      background-color: #dc3545;
-    }
-
     .editButton {
       background-color: #28a745;
-      margin-right: 10px;
+      margin-right: 1.5rem;
       margin-left: 1rem;
     }
+
+    .deleteButton {
+      background-color: #dc3545;
+      
+    }
+
 
     .submitButton {
       background-color: #28a745;

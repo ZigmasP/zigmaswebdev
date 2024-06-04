@@ -77,10 +77,9 @@ const Works = () => {
 
   return (
     <div className="workListContainer">
-      <h2>Darbų sąrašas</h2>
+     <Link to="/add-work" className="addWorkLink">Pridėti naują darbą</Link> {/* Nuoroda į „WorkForm“ su pridėtu stiliumi */}
       {message && <div className={`message ${message.type}`}>{message.text}</div>}
-      <Link to="/add-work" className="addWorkLink">Pridėti naują darbą</Link> {/* Nuoroda į „WorkForm“ su pridėtu stiliumi */}
-
+      
       <div className="worksFlexContainer">
         {works.map((work) => (
           <div key={work.id} className="workItem">

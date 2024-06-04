@@ -5,6 +5,7 @@ const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const compression = require("compression");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,7 +19,9 @@ if (!fs.existsSync(uploadsPath)) {
 app.use(express.json());
 app.use(cors());
 app.use('/uploads', express.static(uploadsPath));
+app.use(compression()); //Įjungia kompresiją visoms HTTP užklausoms
 
+//Duomenų bazės sujungimas
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -35,6 +38,7 @@ db.connect((err) => {
   console.log("Sėkmingai prisijungta prie MariaDB duomenų bazės.");
 });
 
+//Multer konfigūracija
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadsPath);
@@ -48,6 +52,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+//Maršrutai
 app.post("/works", upload.single("photo"), (req, res) => {
   const { title, description } = req.body;
   const photo = req.file ? req.file.filename : null;
