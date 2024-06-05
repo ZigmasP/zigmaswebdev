@@ -1,104 +1,125 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #80D0C7;
-    background-image: linear-gradient(135deg, #80D0C7 0%, #0093E9 55%);
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
+  font-family: Arial, sans-serif;
+  background-color: #80D0C7;
+  background-image: linear-gradient(135deg, #80D0C7 0%, #0093E9 55%);
+  margin: 0;
+  height: 150vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column; /* Mobile-first: Stack vertically */
+  align-items: center; /* Center the items */
+}
+
+.form-container,
+.search-container,
+.works-container {
+  width: 100%; /* Full width on mobile */
+  max-width: 350px;
+  background-color: transparent; /* Make container background transparent */
+  border: none; /* Remove border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box-shadow */
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 10px 0; /* Stack vertically with margins */
+}
+
+.form-container h3,
+.search-container h2 {
+  text-align: center;
+  margin: 0 0 10px;
+}
+
+.form-container form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-container form input,
+.form-container form textarea,
+.form-container form button,
+.search-container input,
+.search-container button {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.works-container {
+  flex: 1;
+  padding: 10px;
+  background-color: transparent; /* Make works-container background transparent */
+  border: none; /* Remove border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box-shadow */
+}
+
+.worksFlexContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; /* Ensure the items spread across the container */
+  width: 100%; /* Full width */
+  margin: 0; /* Remove margin */
+}
+
+.work-item {
+  flex: 1 1 calc(33.33% - 20px); /* Adjust to 33.33% width minus margins */
+  border-bottom: 1px solid #ddd;
+  background-color: white;
+  margin: 10px;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box-shadow */
+}
+
+.work-item .workItemContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.work-item .workPhoto {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+}
+
+.work-item .workTitle {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.work-item .workDescription {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.work-item button {
+  margin-right: 10px;
+}
+
+@media (min-width: 768px) {
   .container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex; /* Pridedame fleksinį išdėstymą */
-    justify-content: space-between; /* Lygiuojame elementus tarpais */
+    flex-direction: row; /* Row direction on larger screens */
+    justify-content: space-between;
   }
-  
+
   .form-container,
   .search-container,
   .works-container {
-    width: 350px; /* Nustatome 300px pločio konteineriui */
-    background-color: transparent;
-    
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    box-sizing: border-box;
-    margin: 10px; /* Vienuodi tarpai tarp konteinerių */
+    width: 300px; /* Fixed width on larger screens */
+    margin: 10px;
   }
-  
-  .form-container h3,
-  .search-container h2 {
-    text-align: center;
-    margin: 0 0 10px; /* Pašaliname viršutinį ir apatinį tarpus */
-  }
-  
-  .form-container form label {
-    display: block;
-    margin-bottom: 10px; /* Pridedame tarpus tarp label ir input */
-  }
-  
-  .form-container form input,
-  .form-container form textarea,
-  .form-container form button,
-  .search-container input,
-  .search-container button {
-    width: 100%;
-    margin-bottom: 10px; /* Pridedame tarpus tarp laukų */
-  }
-  
-  .works-container {
-    flex: 1; /* Užtikrina, kad šis konteineris užimtų visas likusias erdves */
-    padding: 20px; /* Paslenka rezultatus į centrą */
-  }
-  
+
   .worksFlexContainer {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 350px; /* Nustatome maksimalų pločių, kai nėra rezultatų */
-    margin: 0 auto; /* Centruojame rezultatus */
-  }
-  
-  .work-item {
-    flex: 0 1 calc(33.33% - 10px); /* Prieš tai buvo 18%, dabar 33.33% su 10px tarpais */
-    border-bottom: 1px solid #ddd;
-    background-color: white;
-    margin-bottom: 20px; /* Pridėjome tarpą tarp darbų */
-    margin-right: 20px; /* Pridėjome tarpą tarp darbų */
-    box-sizing: border-box;
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .work-item .workItemContainer {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .work-item .workPhoto {
     width: 100%;
-    height: auto;
-    max-height: 200px;
   }
-  
-  .work-item .workTitle {
-    font-weight: bold;
-    margin-bottom: 10px; /* Pridėjome tarpą tarp pavadinimo ir aprašymo */
-    text-align: center;
-  }
-  
-  .work-item .workDescription {
-    margin-bottom: 10px; /* Pridėjome tarpą tarp aprašymo ir mygtukų */
-    text-align: center;
-  }
-  
-  .work-item button {
-    margin-right: 10px; /* Pridėjome tarpą tarp mygtukų */
-  }
-  
+}
