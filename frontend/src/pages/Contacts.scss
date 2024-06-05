@@ -1,0 +1,39 @@
+.contacts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    justify-content: flex-start;
+  }
+  
+  .hero {
+    text-align: center;
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+  }
+  
+  .contact-item div {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-item span {
+    display: block;
+  }
+  
+  .icon {
+    color: #0093E9;
+  }
+  
