@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Works.scss'; // Importuojame stiliaus failą
@@ -18,6 +19,7 @@ const Works = () => {
   return (
     <div>
       <div className="workListContainer">
+      <Link to="/" className="back-link">Į pradinį</Link>
         <div className="worksFlexContainer">
           {works.map((work) => (
             <div key={work.id} className="workItem">

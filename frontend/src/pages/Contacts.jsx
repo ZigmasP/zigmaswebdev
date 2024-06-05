@@ -3,6 +3,7 @@ import { FaBuilding, FaUniversity, FaMapMarkerAlt, FaEnvelope, FaPhone } from "r
 import "./Contacts.scss";
 
 const Contacts = () => {
+    
   return (
     <div className="contacts-container">
       <Link to="/" className="back-link">Į pradinį</Link>
