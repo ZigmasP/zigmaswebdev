@@ -1,75 +1,81 @@
-.workListContainer {
+.work-container {
   padding: 1rem;
   background-color: #80D0C7;
   background-image: linear-gradient(135deg, #80D0C7 0%, #0093E9 55%);
   position: relative;
   
-  .worksFlexContainer {
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+  }
+
+  .works-container {
     display: flex;
     flex-wrap: wrap;
     max-width: 1200px; /* Fiksuotas plotis */
     margin: 0 auto; /* Centruojame konteinerį */
   }
 
-.workItem {
-  flex: 0 1 100%;
-  width: 18%;
-  border-bottom: 1px solid #ddd;
-  background-color: white;
-  margin-bottom: 1rem;
-
-  .workItemContainer {
-    display: flex;
-    flex-direction: column;
-  }
-
-.workPhoto {
-  width: 100%;
-  height: auto;
-  max-height: 200px;
-}
-
-.workTitle {
-  font-weight: bold;
-  margin-bottom: 5px;
-  text-align: center;
-}
-
-.workDescription {
-  margin-bottom: 5px;
-  text-align: center;
-  }
-}
-
-@media (min-width: 576px) {
   .workItem {
-    flex: 0 1 48%;
-    margin-right: 1.5%;
-    margin-bottom: 1.5%;
-  }
-}
+    flex: 0 1 100%;
+    width: 18%;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+    margin-bottom: 1rem;
 
-@media (min-width: 768px) {
-  .workItem {
-    flex: 0 1 30%;
-    margin-right: 1.5%;
-    margin-bottom: 1.5%;
-  }
-}
+    .workItemContainer {
+      display: flex;
+      flex-direction: column;
+    }
 
-@media (min-width: 992px) {
-  .workItem {
-    flex: 0 1 23%;
-    margin-right: 1.5%;
-    margin-bottom: 1.5%;
-  }
-}
+    .workPhoto {
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+    }
 
-@media (min-width: 1200px) {
-  .workItem {
-    flex: 0 1 18%;
-    margin-right: 1.5%;
-    margin-bottom: 1.5%;
+    .workTitle {
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .workDescription {
+      margin-bottom: 5px;
+      text-align: center;
+    }
   }
-}
+
+  @media (min-width: 576px) {
+    .workItem {
+      flex: 0 1 48%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .workItem {
+      flex: 0 1 30%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .workItem {
+      flex: 0 1 23%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .workItem {
+      flex: 0 1 18%;
+      margin-right: 1.5%;
+      margin-bottom: 1.5%;
+    }
+  }
 }

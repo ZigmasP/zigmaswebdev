@@ -9,7 +9,7 @@ const About = () => {
       <Link to="/" className="back-link">Į pagrindinį</Link>
       <section className="hero">
         <div className="profile-container">
-          <img src={profileImage} alt="Profilio nuotrauka" className="profile-image" />
+          <img src={profileImage} alt="Profilio nuotrauka" className="profile-image" loading="lazy" />
         </div>
       </section>
       <section className="about-text">

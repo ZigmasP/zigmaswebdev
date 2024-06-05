@@ -20,10 +20,10 @@ const Header = () => {
       <div className="logo">
         <img src={logo} alt="Zigmaswebdev Logo" />
       </div>
-      <nav className={isMenuOpen ? "open" : ""}>
+      <nav className={isMenuOpen ? "open" : ""} aria-label="Main Navigation">
         <ul>
           <li>
-            <Link to="/" onClick={closeMenu}></Link>
+            <Link to="/" onClick={closeMenu}>Home</Link>
           </li>
           <li>
             <Link to="/apie-mane" onClick={closeMenu}>Apie mane</Link>
@@ -36,9 +36,9 @@ const Header = () => {
           </li>
         </ul>
       </nav>
-      <div className="menu-toggle" onClick={toggleMenu}>
+      <button className="menu-toggle" onClick={toggleMenu} aria-label="Toggle Menu">
         {isMenuOpen ? <FaTimes /> : <FaBars />}
-      </div>
+      </button>
     </header>
   );
 };

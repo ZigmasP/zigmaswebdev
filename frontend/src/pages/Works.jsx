@@ -18,9 +18,9 @@ const Works = () => {
 
   return (
     <div>
-      <div className="workListContainer">
-      <Link to="/" className="back-link">Į pradinį</Link>
-        <div className="worksFlexContainer">
+      <div className="work-container">
+      <Link to="/" className="back-link">Į pagrindinį</Link>
+        <div className="works-container">
           {works.map((work) => (
             <div key={work.id} className="workItem">
               <div className="workItemContainer">
