@@ -14,8 +14,8 @@ const Contacts = () => {
         <div className="contact-item">
           <FaBuilding className="icon" />
           <div>
-            <span>Įmonės pavadinimas: Mano įmonė</span>
-            <span>Įmonės kodas: 123456789</span>
+          <span>Zigmas Petrauskas</span>
+          <span>IDV pažymos kodas: 1269609</span>
           </div> 
         </div>
         <div className="contact-item">
